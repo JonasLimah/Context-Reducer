@@ -33,9 +33,12 @@ export const PostReducer =(post:Array<Post>,action:TypeReducer)=>{
         case "remove":
             return post.filter(item =>item.id !== action.payload.id)
         case "edit":
-            return post.map((item)=>{if(item.id === action.payload.id){
-                item.title === action.payload.newTitle;
-                item.body === action.payload.newBody;
+            return post.map((item)=>{
+                
+                if(item.id === action.payload.id){
+                    if(!item.title && !item.body)return item;
+                    item.title = action.payload.newTitle;
+                    item.body = action.payload.newBody;
             }
             return item
         })

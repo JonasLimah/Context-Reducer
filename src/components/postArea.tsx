@@ -1,11 +1,11 @@
-import { ContextPost } from "@/context/PostContext";
+import { PostContext } from "@/context/PostContext";
 import { useContext, useState } from "react";
 
 
 export const PostArea =()=>{
    const [title,setTitle] = useState('')
    const [body,setBody] = useState('')
-    const Posts = useContext(ContextPost)
+    const Posts = useContext(PostContext)
    const handleAdd=()=>{
     if(title.trim()==="" || body.trim()==="")return false;
     Posts?.dispatch({
@@ -25,7 +25,7 @@ export const PostArea =()=>{
     })
    }
    const handleEdit=(id:number)=>{
-    const post = Posts?.post.find(item=>item.id === id)
+    const post = Posts?.posts.find(item=>item.id === id)
     if(!post)return false;
     const newTitle = window.prompt("edite seu Titulo",post.title)
     const newBody = window.prompt("edite seu comentario",post.body)
@@ -49,14 +49,14 @@ export const PostArea =()=>{
                 <button>Enviar</button>
                
             </div>
-            <p>Total de Post: {Posts?.post.length}</p>
+            <p>Total de Post: {Posts?.posts.length}</p>
             <hr />
             <div>
-                {Posts?.post.map((item)=>(
-                    <section className="m-1 p-2">
+                {Posts?.posts.map((item)=>(
+                    <section key={item.id} className="m-1 p-2">
                         <hr />
                       
-                        <div key={item.id}>
+                        <div >
                        
                             <h1 className="font-semibold text-lg">{item.title}</h1>
                             

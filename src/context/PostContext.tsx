@@ -1,20 +1,24 @@
-import { Dispatch, ReactNode, createContext, useReducer } from "react"
+import { Dispatch, ReactNode, createContext, useEffect, useReducer } from "react"
 import { Post } from "../../type/postType"
 import { PostReducer, TypeReducer } from "@/reducer/PostReducer"
 
 
 type TypeContextData ={
-    post:Array<Post>
+    posts:Array<Post>
     dispatch:Dispatch<TypeReducer>
 }
 
-export const ContextPost = createContext<TypeContextData | null>(null);
+export const PostContext = createContext<TypeContextData>({posts:[],dispatch:()=>null});
 type Props ={
     children:ReactNode
 }
 export const PostProvider = ({children}:Props)=>{
-    const [post,dispatch] = useReducer(PostReducer,[])
+    const [posts,dispatch] = useReducer(PostReducer,JSON.parse(localStorage.getItem("posts")||"[]"))
+    
+    useEffect(()=>{
+       localStorage.setItem("posts",JSON.stringify(posts))
+    },[posts])
     return(
-        <ContextPost.Provider value={{post,dispatch}}>{children}</ContextPost.Provider>
+        <PostContext.Provider value={{posts,dispatch}}>{children}</PostContext.Provider>
     );
 }
